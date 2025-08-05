@@ -236,7 +236,10 @@
         `;
 
         if (mode === 'time' && elapsed >= goal) stopTest();
-        if (mode === 'clicks' && count >= goal) stopTest();
+        if (mode === 'clicks' && count >= goal) {
+          count = goal; 
+          stopTest();
+        }
       }, 50);
     }
 
@@ -292,6 +295,7 @@
       if (!testActive) return;
 
       if (allowedKeys.has(key) && !heldKeys.has(key)) {
+        if (mode === 'clicks' && count >= goal) return;
         count++;
         heldKeys.add(key);
       }
