@@ -345,7 +345,7 @@
       const key2 = document.getElementById("key2").value.toLowerCase();
       document.getElementById("key1").value = key1;
       document.getElementById("key2").value = key2;
-      // Only allow key2 in singletap mode, both in stream mode
+
       allowedKeys = tapType === 'singletap' ? new Set([key2]) : new Set([key1, key2]);
     }
 
