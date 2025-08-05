@@ -304,6 +304,18 @@
     document.addEventListener("keyup", (e) => {
       heldKeys.delete(e.key.toLowerCase());
     });
+
+    // Update allowedKeys whenever key1 or key2 changes
+    document.getElementById("key1").addEventListener("input", updateAllowedKeys);
+    document.getElementById("key2").addEventListener("input", updateAllowedKeys);
+
+    function updateAllowedKeys() {
+      const key1 = document.getElementById("key1").value.toLowerCase();
+      const key2 = document.getElementById("key2").value.toLowerCase();
+      document.getElementById("key1").value = key1;
+      document.getElementById("key2").value = key2;
+      allowedKeys = tapType === 'singletap' ? new Set([key1]) : new Set([key1, key2]);
+    }
   </script>
 </body>
 </html>
