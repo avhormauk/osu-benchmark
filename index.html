@@ -55,7 +55,7 @@
 
     #modeBtn,
     #tapTypeBtn {
-      min-width: 140px; 
+      min-width: 70px; 
     }
 
     button:disabled {
@@ -137,8 +137,8 @@
     </div>
 
     <div class="mode-group">
-      <button onclick="switchMode()" id="modeBtn">mode: time</button>
-      <button onclick="switchTapType()" id="tapTypeBtn">type: stream</button>
+      <button onclick="switchMode()" id="modeBtn">time</button>
+      <button onclick="switchTapType()" id="tapTypeBtn">stream</button>
     </div>
   </div>
 
@@ -167,7 +167,7 @@
 
     function switchMode() {
       mode = mode === 'time' ? 'clicks' : 'time';
-      document.getElementById("modeBtn").innerText = `mode: ${mode}`;
+      document.getElementById("modeBtn").innerText = mode;
       document.getElementById("goalLabel").innerText = mode === 'time' ? 'seconds:' : 'clicks:';
       document.getElementById("goalInput").value = mode === 'time' ? '10' : '50';
       document.getElementById("timer").innerText = 'time: 0.00';
@@ -177,7 +177,7 @@
 
     function switchTapType() {
       tapType = tapType === 'stream' ? 'singletap' : 'stream';
-      document.getElementById("tapTypeBtn").innerText = `type: ${tapType}`;
+      document.getElementById("tapTypeBtn").innerText = tapType;
       document.getElementById("key2").style.display = tapType === 'singletap' ? 'none' : 'inline-block';
       document.querySelector("label[for='key2']").style.display = tapType === 'singletap' ? 'none' : 'inline-block';
     }
