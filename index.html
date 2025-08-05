@@ -139,7 +139,11 @@
   <button id="startStopBtn" onclick="toggleTest()">start</button>
 
   <div id="timer">time: 0.00</div>
-  <div id="liveStats"><span class="highlight">bpm: 0.00</span> <span class="dimmed">| clicks: 0 | cps: 0.00</span></div>
+  <div id="liveStats">
+    <div class="stat-block"><span class="highlight">bpm</span><br>0.00</div>
+    <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
+    <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
+  </div>
   <div id="results"></div>
   <div id="copyBtnContainer"></div>
 
@@ -188,7 +192,11 @@
       document.getElementById("results").innerText = "";
       document.getElementById("copyBtnContainer").innerHTML = "";
       document.getElementById("timer").innerText = `time: 0.00`;
-      document.getElementById("liveStats").innerHTML = `<span class="highlight">bpm: 0.00</span> <span class="dimmed">| clicks: 0 | cps: 0.00</span>`;
+      document.getElementById("liveStats").innerHTML = `
+        <div class="stat-block"><span class="highlight">bpm</span><br>0.00</div>
+        <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
+        <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
+      `;
 
       const key1 = document.getElementById("key1").value.toLowerCase();
       const key2 = document.getElementById("key2").value.toLowerCase();
