@@ -178,8 +178,25 @@
     function switchTapType() {
       tapType = tapType === 'stream' ? 'singletap' : 'stream';
       document.getElementById("tapTypeBtn").innerText = tapType;
-      document.getElementById("key2").style.display = tapType === 'singletap' ? 'none' : 'inline-block';
-      document.querySelector("label[for='key2']").style.display = tapType === 'singletap' ? 'none' : 'inline-block';
+
+      if (tapType === 'singletap') {
+        // Hide key1, show key2 as "key"
+        document.getElementById("key1").style.display = "none";
+        document.querySelector("label[for='key1']").style.display = "none";
+        document.getElementById("key2").style.display = "inline-block";
+        const key2Label = document.querySelector("label[for='key2']");
+        key2Label.style.display = "inline-block";
+        key2Label.innerText = "key:";
+      } else {
+        // Show both key1 and key2 as normal
+        document.getElementById("key1").style.display = "inline-block";
+        document.querySelector("label[for='key1']").style.display = "inline-block";
+        document.getElementById("key2").style.display = "inline-block";
+        const key2Label = document.querySelector("label[for='key2']");
+        key2Label.style.display = "inline-block";
+        key2Label.innerText = "key 2:";
+      }
+      updateAllowedKeys();
     }
 
     function toggleTest() {
