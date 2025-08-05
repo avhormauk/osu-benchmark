@@ -55,7 +55,7 @@
 
     #modeBtn,
     #tapTypeBtn {
-      min-width: 90px; 
+      min-width: 100px; 
     }
 
     button:disabled {
@@ -169,7 +169,7 @@
       mode = mode === 'time' ? 'clicks' : 'time';
       document.getElementById("modeBtn").innerText = mode;
       document.getElementById("goalLabel").innerText = mode === 'time' ? 'seconds:' : 'clicks:';
-      document.getElementById("goalInput").value = mode === 'time' ? '10' : '50';
+      document.getElementById("goalInput").value = mode === 'time' ? '10' : '100'; 
       document.getElementById("timer").innerText = 'time: 0.00';
       document.getElementById("results").innerText = '';
       document.getElementById("copyBtnContainer").innerHTML = '';
@@ -199,7 +199,7 @@
       document.getElementById("copyBtnContainer").innerHTML = "";
       document.getElementById("timer").innerText = `time: 0.00`;
       document.getElementById("liveStats").innerHTML = `
-        <div class="stat-block"><span class="highlight">bpm</span><br>0.00</div>
+        <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
         <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
         <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
       `;
@@ -221,9 +221,16 @@
         const elapsed = (Date.now() - startTime) / 1000;
         document.getElementById("timer").innerText = `time: ${elapsed.toFixed(2)}`;
         const cps = (count / elapsed).toFixed(2);
-        const bpm = (cps / 4 * 60).toFixed(2);
+        let bpm, bpmLabel;
+        if (tapType === 'singletap') {
+          bpm = ((cps / 4 * 60) * 2).toFixed(2);
+          bpmLabel = 'bpm <span style="font-size:0.9em">(1/2)</span>';
+        } else {
+          bpm = (cps / 4 * 60).toFixed(2);
+          bpmLabel = 'bpm <span style="font-size:0.9em">(1/4)</span>';
+        }
         document.getElementById("liveStats").innerHTML = `
-          <div class="stat-block"><span class="highlight">bpm</span><br>${bpm}</div>
+          <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
           <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
           <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
         `;
@@ -247,7 +254,14 @@
         elapsed = (Date.now() - startTime) / 1000;
       }
       const cps = (count / elapsed).toFixed(2);
-      const bpm = (cps / 4 * 60).toFixed(2);
+      let bpm, bpmLabel;
+      if (tapType === 'singletap') {
+        bpm = ((cps / 4 * 60) * 2).toFixed(2);
+        bpmLabel = 'bpm <span style="font-size:0.9em">(1/2)</span>';
+      } else {
+        bpm = (cps / 4 * 60).toFixed(2);
+        bpmLabel = 'bpm <span style="font-size:0.9em">(1/4)</span>';
+      }
 
       document.getElementById("key1").disabled = false;
       document.getElementById("key2").disabled = false;
@@ -256,6 +270,11 @@
       const scoreText = `mode: ${mode}\ntype: ${tapType}\n${count} clicks\n${cps} cps\n${bpm} bpm`;
       document.getElementById("copyBtnContainer").innerHTML = `<button id="copyBtn" onclick="copyScore(this, \`${scoreText}\`)">copy score</button>`;
 
+      document.getElementById("liveStats").innerHTML = `
+        <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
+        <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
+        <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
+      `;
     }
 
     function copyScore(btn, text) {
