@@ -149,6 +149,7 @@
     <div class="stat-block"><span class="highlight">bpm</span><br>0.00</div>
     <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
     <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
+    <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
   </div>
   <div id="results"></div>
   <div id="copyBtnContainer"></div>
@@ -164,6 +165,9 @@
     let interval;
     let heldKeys = new Set();
     let finished = false;
+
+    let hitTimes = [];
+    let lastHitTime = null;
 
     function switchMode() {
       mode = mode === 'time' ? 'clicks' : 'time';
@@ -219,6 +223,7 @@
         <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
         <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
         <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
+        <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
       `;
 
       const key1 = document.getElementById("key1").value.toLowerCase();
@@ -246,10 +251,12 @@
           bpm = (cps / 4 * 60).toFixed(2);
           bpmLabel = 'bpm <span style="font-size:0.9em">(1/4)</span>';
         }
+        const ur = calculateUR(hitTimes);
         document.getElementById("liveStats").innerHTML = `
           <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
           <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
           <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
+          <div class="stat-block"><span class="dimmed">unstable rate</span><br>${ur}</div>
         `;
 
         if (mode === 'time' && elapsed >= goal) stopTest();
@@ -282,6 +289,7 @@
         bpm = (cps / 4 * 60).toFixed(2);
         bpmLabel = 'bpm <span style="font-size:0.9em">(1/4)</span>';
       }
+      const ur = calculateUR(hitTimes);
 
       document.getElementById("key1").disabled = false;
       document.getElementById("key2").disabled = false;
@@ -294,6 +302,7 @@
         <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
         <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
         <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
+        <div class="stat-block"><span class="dimmed">unstable rate</span><br>${ur}</div>
       `;
     }
 
@@ -315,6 +324,12 @@
         if (mode === 'clicks' && count >= goal) return;
         count++;
         heldKeys.add(key);
+
+        const now = Date.now();
+        if (lastHitTime !== null) {
+          hitTimes.push(now - lastHitTime);
+        }
+        lastHitTime = now;
       }
     });
 
@@ -330,7 +345,16 @@
       const key2 = document.getElementById("key2").value.toLowerCase();
       document.getElementById("key1").value = key1;
       document.getElementById("key2").value = key2;
-      allowedKeys = tapType === 'singletap' ? new Set([key1]) : new Set([key1, key2]);
+      // Only allow key2 in singletap mode, both in stream mode
+      allowedKeys = tapType === 'singletap' ? new Set([key2]) : new Set([key1, key2]);
+    }
+
+    function calculateUR(times) {
+      if (times.length < 2) return "—";
+      const mean = times.reduce((a, b) => a + b, 0) / times.length;
+      const variance = times.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / times.length;
+      const stddev = Math.sqrt(variance);
+      return (stddev * 10).toFixed(1); 
     }
   </script>
 </body>
