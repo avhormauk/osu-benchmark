@@ -79,6 +79,13 @@
     .highlight {
       color: #ffffff;
     }
+
+    .copied-btn {
+      outline: 2px solid #fff;
+      background: #000;
+      color: #fff;
+      transition: outline 0.2s, background 0.2s, color 0.2s;
+    }
   </style>
 </head>
 <body>
@@ -197,8 +204,15 @@
       document.getElementById("goalInput").disabled = false;
 
       const scoreText = `mode: ${mode}\ntype: ${tapType}\n${count} clicks\n${cps} cps\n${bpm} bpm`;
-      document.getElementById("copyBtnContainer").innerHTML = `<button onclick="navigator.clipboard.writeText(\`${scoreText}\`).then(() => this.innerText = 'copied')">copy score</button>`;
+      document.getElementById("copyBtnContainer").innerHTML = `<button id="copyBtn" onclick="copyScore(this, \`${scoreText}\`)">copy score</button>`;
 
+    }
+
+    function copyScore(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.innerText = 'copied';
+        btn.classList.add('copied-btn');
+      });
     }
 
     document.addEventListener("keydown", (e) => {
