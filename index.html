@@ -95,7 +95,6 @@
       outline: 2px solid #fff;
       background: #000;
       color: #fff;
-      transition: outline 0.2s, background 0.2s, color 0.2s;
     }
   </style>
 </head>
@@ -206,7 +205,13 @@
       finished = true;
       document.getElementById("startStopBtn").innerText = "retry";
 
-      const elapsed = (Date.now() - startTime) / 1000;
+      let elapsed;
+      if (mode === 'time') {
+        elapsed = goal;
+        document.getElementById("timer").innerText = `time: ${goal.toFixed(2)}`;
+      } else {
+        elapsed = (Date.now() - startTime) / 1000;
+      }
       const cps = (count / elapsed).toFixed(2);
       const bpm = (cps / 4 * 60).toFixed(2);
 
