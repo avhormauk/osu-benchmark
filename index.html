@@ -184,21 +184,22 @@
       document.getElementById("tapTypeBtn").innerText = tapType;
 
       if (tapType === 'singletap') {
-        // Hide key1, show key2 as "key"
         document.getElementById("key1").style.display = "none";
         document.querySelector("label[for='key1']").style.display = "none";
         document.getElementById("key2").style.display = "inline-block";
         const key2Label = document.querySelector("label[for='key2']");
         key2Label.style.display = "inline-block";
         key2Label.innerText = "key:";
+        document.getElementById("key2").value = "x";
       } else {
-        // Show both key1 and key2 as normal
         document.getElementById("key1").style.display = "inline-block";
         document.querySelector("label[for='key1']").style.display = "inline-block";
         document.getElementById("key2").style.display = "inline-block";
         const key2Label = document.querySelector("label[for='key2']");
         key2Label.style.display = "inline-block";
         key2Label.innerText = "key 2:";
+        document.getElementById("key1").value = "z";
+        document.getElementById("key2").value = "x";
       }
       updateAllowedKeys();
     }
@@ -220,10 +221,14 @@
       document.getElementById("copyBtnContainer").innerHTML = "";
       document.getElementById("timer").innerText = `time: 0.00`;
       document.getElementById("liveStats").innerHTML = `
-        <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
-        <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
-        <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
-        <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
+        <div style="display:flex;justify-content:center;gap:2.5rem;">
+          <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
+          <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
+          <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
+        </div>
+        <div style="display:flex;justify-content:center;margin-top:0.5rem;">
+          <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
+        </div>
       `;
 
       const key1 = document.getElementById("key1").value.toLowerCase();
@@ -231,12 +236,15 @@
       document.getElementById("key1").value = key1;
       document.getElementById("key2").value = key2;
 
-      allowedKeys = tapType === 'singletap' ? new Set([key1]) : new Set([key1, key2]);
+      allowedKeys = tapType === 'singletap' ? new Set([key2]) : new Set([key1, key2]);
       testActive = true;
       document.getElementById("startStopBtn").innerText = "stop";
       document.getElementById("key1").disabled = true;
       document.getElementById("key2").disabled = true;
       document.getElementById("goalInput").disabled = true;
+
+      hitTimes = [];
+      lastHitTime = null;
 
       startTime = Date.now();
       interval = setInterval(() => {
@@ -253,10 +261,14 @@
         }
         const ur = calculateUR(hitTimes);
         document.getElementById("liveStats").innerHTML = `
-          <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
-          <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
-          <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
-          <div class="stat-block"><span class="dimmed">unstable rate</span><br>${ur}</div>
+          <div style="display:flex;justify-content:center;gap:2.5rem;">
+            <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
+            <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
+            <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
+          </div>
+          <div style="display:flex;justify-content:center;margin-top:0.5rem;">
+            <div class="stat-block"><span class="dimmed">unstable rate</span><br>${ur}</div>
+          </div>
         `;
 
         if (mode === 'time' && elapsed >= goal) stopTest();
@@ -299,10 +311,14 @@
       document.getElementById("copyBtnContainer").innerHTML = `<button id="copyBtn" onclick="copyScore(this, \`${scoreText}\`)">copy score</button>`;
 
       document.getElementById("liveStats").innerHTML = `
-        <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
-        <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
-        <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
-        <div class="stat-block"><span class="dimmed">unstable rate</span><br>${ur}</div>
+        <div style="display:flex;justify-content:center;gap:2.5rem;">
+          <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
+          <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
+          <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
+        </div>
+        <div style="display:flex;justify-content:center;margin-top:0.5rem;">
+          <div class="stat-block"><span class="dimmed">unstable rate</span><br>${ur}</div>
+        </div>
       `;
     }
 
