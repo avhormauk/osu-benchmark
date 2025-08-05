@@ -67,6 +67,22 @@
       margin-top: 1rem;
     }
 
+    #liveStats {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem; 
+      font-variant-numeric: tabular-nums; 
+    }
+
+    .stat-block {
+      min-width: 110px; 
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .controls {
       margin-bottom: 2rem;
     }
@@ -192,7 +208,11 @@
         document.getElementById("timer").innerText = `time: ${elapsed.toFixed(2)}`;
         const cps = (count / elapsed).toFixed(2);
         const bpm = (cps / 4 * 60).toFixed(2);
-        document.getElementById("liveStats").innerHTML = `<span class="highlight">bpm: ${bpm}</span> <span class="dimmed">| clicks: ${count} | cps: ${cps}</span>`;
+        document.getElementById("liveStats").innerHTML = `
+          <div class="stat-block"><span class="highlight">bpm</span><br>${bpm}</div>
+          <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
+          <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
+        `;
 
         if (mode === 'time' && elapsed >= goal) stopTest();
         if (mode === 'clicks' && count >= goal) stopTest();
