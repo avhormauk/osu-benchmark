@@ -321,7 +321,7 @@
       }).replace(',', ''); 
 
       const modeDisplay = mode === 'time' ? `${goal}sec` : `${goal}clicks`;
-      const scoreText = `${currentDate}, ${tapType}, ${count} clicks, ${cps} cps, ${bpm} bpm, ${modeDisplay}, ${ur} UR`;
+      const scoreText = `${currentDate}, ${tapType} (${modeDisplay}), ${count} clicks, ${cps} cps, ${bpm} bpm, ${ur} UR`;
 
       document.getElementById("copyBtnContainer").innerHTML = `<button id="copyBtn" onclick="copyScore(this, \`${scoreText}\`)">copy score</button>`;
 
