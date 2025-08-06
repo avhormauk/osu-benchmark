@@ -146,10 +146,12 @@
 
   <div id="timer">time: 0.00</div>
   <div id="liveStats">
-    <div class="stat-block"><span class="highlight">bpm</span><br>0.00</div>
-    <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
-    <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
-    <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
+    <div class="stat-group" style="display:flex;justify-content:center;gap:2.5rem;">
+      <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
+      <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
+      <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
+      <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
+    </div>
   </div>
   <div id="results"></div>
   <div id="copyBtnContainer"></div>
@@ -182,6 +184,12 @@
     function switchTapType() {
       tapType = tapType === 'stream' ? 'singletap' : 'stream';
       document.getElementById("tapTypeBtn").innerText = tapType;
+
+      const bpmLabel = tapType === 'singletap' ? 
+        'bpm <span style="font-size:0.9em">(1/2)</span>' : 
+        'bpm <span style="font-size:0.9em">(1/4)</span>';
+      
+      document.getElementById("liveStats").querySelector(".highlight").innerHTML = bpmLabel;
 
       if (tapType === 'singletap') {
         document.getElementById("key1").style.display = "none";
