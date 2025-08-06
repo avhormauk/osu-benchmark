@@ -150,7 +150,7 @@
       <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
       <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
       <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
-      <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
+      <div class="stat-block"><span class="dimmed">ur</span><br>—</div>
     </div>
   </div>
   <div id="results"></div>
@@ -233,7 +233,7 @@
           <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
           <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
           <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
-          <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
+          <div class="stat-block"><span class="dimmed">ur</span><br>—</div>
         </div>
       `;
 
@@ -271,7 +271,7 @@
             <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
             <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
             <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
-            <div class="stat-block"><span class="dimmed">unstable rate</span><br>${ur}</div>
+            <div class="stat-block"><span class="dimmed">UR</span><br>${ur}</div>
           </div>
         `;
 
@@ -311,7 +311,18 @@
       document.getElementById("key2").disabled = false;
       document.getElementById("goalInput").disabled = false;
 
-      const scoreText = `mode: ${mode}\ntype: ${tapType}\n${count} clicks\n${cps} cps\n${bpm} bpm`;
+      const currentDate = new Date().toLocaleString('en-US', { 
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+
+      const modeDisplay = mode === 'time' ? `${goal}sec` : `${goal}clicks`;
+      const scoreText = `${currentDate}, ${tapType}, ${count} clicks, ${cps} cps, ${bpm} bpm, ${modeDisplay}, ${ur} UR`;
+
       document.getElementById("copyBtnContainer").innerHTML = `<button id="copyBtn" onclick="copyScore(this, \`${scoreText}\`)">copy score</button>`;
 
       document.getElementById("liveStats").innerHTML = `
@@ -319,7 +330,7 @@
           <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
           <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
           <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
-          <div class="stat-block"><span class="dimmed">unstable rate</span><br>${ur}</div>
+          <div class="stat-block"><span class="dimmed">UR</span><br>${ur}</div>
         </div>
       `;
     }
