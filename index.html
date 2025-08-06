@@ -20,29 +20,6 @@
       margin-bottom: 3rem;
     }
 
-    .home-btn, .copied-btn {
-      outline: 2px solid #fff;
-      background: #000;
-      color: #fff;
-      border: none;
-      padding: 0.4rem 1rem;
-      font-size: 1rem;
-      margin: 1rem 0.3rem;
-      min-width: 120px;
-      cursor: pointer;
-    }
-
-    .test-btn {
-      font-size: 1rem;
-      margin: 1rem 0.3rem;
-      background-color: #ffffff;
-      color: #000000;
-      border: none;
-      padding: 0.4rem 1rem;
-      min-width: 120px;
-      cursor: pointer;
-    }
-
     input {
       font-size: 1rem;
       width: 2rem;
@@ -63,6 +40,17 @@
 
     input#goalInput {
       width: 4rem;
+    }
+
+    button {
+      font-size: 1rem;
+      margin: 1rem 0.3rem;
+      background-color: #ffffff;
+      color: #000000;
+      border: none;
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+      min-width: 120px;
     }
 
     #modeBtn,
@@ -124,59 +112,49 @@
     .highlight {
       color: #ffffff;
     }
+
+    .copied-btn {
+      outline: 2px solid #fff;
+      background: #000;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
-  <div id="homepage">
-    <h1>osu! benchmark</h1>
-    <button class="test-btn" onclick="showTappingTest()">tapping test</button>
-  </div>
+  <h1>osu! benchmark</h1>
 
-  <div id="tappingtest" style="display:none;">
-    <h1>osu! benchmark</h1>
-    <button class="home-btn" onclick="showHome()">home</button>
-    <div class="controls">
-      <div class="input-group" id="keyInputs">
-        <label for="key1">key 1:</label>
-        <input type="text" id="key1" value="z" maxlength="1">
-        <label for="key2">key 2:</label>
-        <input type="text" id="key2" value="x" maxlength="1">
-      </div>
-
-      <div class="input-group">
-        <label for="goalInput" id="goalLabel">seconds:</label>
-        <input type="text" id="goalInput" value="10">
-      </div>
-
-      <div class="mode-group">
-        <button onclick="switchMode()" id="modeBtn">time</button>
-        <button onclick="switchTapType()" id="tapTypeBtn">stream</button>
-      </div>
+  <div class="controls">
+    <div class="input-group" id="keyInputs">
+      <label for="key1">key 1:</label>
+      <input type="text" id="key1" value="z" maxlength="1">
+      <label for="key2">key 2:</label>
+      <input type="text" id="key2" value="x" maxlength="1">
     </div>
 
-    <button id="startStopBtn" onclick="toggleTest()">start</button>
-
-    <div id="timer">time: 0.00</div>
-    <div id="liveStats">
-      <div class="stat-block"><span class="highlight">bpm</span><br>0.00</div>
-      <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
-      <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
-      <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
+    <div class="input-group">
+      <label for="goalInput" id="goalLabel">seconds:</label>
+      <input type="text" id="goalInput" value="10">
     </div>
-    <div id="results"></div>
-    <div id="copyBtnContainer"></div>
+
+    <div class="mode-group">
+      <button onclick="switchMode()" id="modeBtn">time</button>
+      <button onclick="switchTapType()" id="tapTypeBtn">stream</button>
+    </div>
   </div>
+
+  <button id="startStopBtn" onclick="toggleTest()">start</button>
+
+  <div id="timer">time: 0.00</div>
+  <div id="liveStats">
+    <div class="stat-block"><span class="highlight">bpm</span><br>0.00</div>
+    <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
+    <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
+    <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
+  </div>
+  <div id="results"></div>
+  <div id="copyBtnContainer"></div>
 
   <script>
-    function showTappingTest() {
-      document.getElementById("homepage").style.display = "none";
-      document.getElementById("tappingtest").style.display = "";
-    }
-    function showHome() {
-      document.getElementById("tappingtest").style.display = "none";
-      document.getElementById("homepage").style.display = "";
-    }
-
     let count = 0;
     let goal = 10;
     let allowedKeys = new Set();
@@ -187,6 +165,7 @@
     let interval;
     let heldKeys = new Set();
     let finished = false;
+
     let hitTimes = [];
     let lastHitTime = null;
 
@@ -205,22 +184,21 @@
       document.getElementById("tapTypeBtn").innerText = tapType;
 
       if (tapType === 'singletap') {
+        // Hide key1, show key2 as "key"
         document.getElementById("key1").style.display = "none";
         document.querySelector("label[for='key1']").style.display = "none";
         document.getElementById("key2").style.display = "inline-block";
         const key2Label = document.querySelector("label[for='key2']");
         key2Label.style.display = "inline-block";
         key2Label.innerText = "key:";
-        document.getElementById("key2").value = "x";
       } else {
+        // Show both key1 and key2 as normal
         document.getElementById("key1").style.display = "inline-block";
         document.querySelector("label[for='key1']").style.display = "inline-block";
         document.getElementById("key2").style.display = "inline-block";
         const key2Label = document.querySelector("label[for='key2']");
         key2Label.style.display = "inline-block";
         key2Label.innerText = "key 2:";
-        document.getElementById("key1").value = "z";
-        document.getElementById("key2").value = "x";
       }
       updateAllowedKeys();
     }
@@ -242,16 +220,10 @@
       document.getElementById("copyBtnContainer").innerHTML = "";
       document.getElementById("timer").innerText = `time: 0.00`;
       document.getElementById("liveStats").innerHTML = `
-        <div style="display:flex;justify-content:center;gap:2.5rem;">
-          <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
-          <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
-          <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
-        </div>
-        <div style="display:flex;justify-content:center;margin-top:0.5rem;">
-          <div class="stat-block" style="min-width:0;text-align:center;">
-            <span class="dimmed">unstable rate</span><br>—
-          </div>
-        </div>
+        <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
+        <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
+        <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
+        <div class="stat-block"><span class="dimmed">unstable rate</span><br>—</div>
       `;
 
       const key1 = document.getElementById("key1").value.toLowerCase();
@@ -259,15 +231,12 @@
       document.getElementById("key1").value = key1;
       document.getElementById("key2").value = key2;
 
-      allowedKeys = tapType === 'singletap' ? new Set([key2]) : new Set([key1, key2]);
+      allowedKeys = tapType === 'singletap' ? new Set([key1]) : new Set([key1, key2]);
       testActive = true;
       document.getElementById("startStopBtn").innerText = "stop";
       document.getElementById("key1").disabled = true;
       document.getElementById("key2").disabled = true;
       document.getElementById("goalInput").disabled = true;
-
-      hitTimes = [];
-      lastHitTime = null;
 
       startTime = Date.now();
       interval = setInterval(() => {
@@ -284,16 +253,10 @@
         }
         const ur = calculateUR(hitTimes);
         document.getElementById("liveStats").innerHTML = `
-          <div style="display:flex;justify-content:center;gap:2.5rem;">
-            <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
-            <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
-            <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
-          </div>
-          <div style="display:flex;justify-content:center;margin-top:0.5rem;">
-            <div class="stat-block" style="min-width:0;text-align:center;">
-              <span class="dimmed">unstable rate</span><br>${ur}
-            </div>
-          </div>
+          <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
+          <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
+          <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
+          <div class="stat-block"><span class="dimmed">unstable rate</span><br>${ur}</div>
         `;
 
         if (mode === 'time' && elapsed >= goal) stopTest();
@@ -336,16 +299,10 @@
       document.getElementById("copyBtnContainer").innerHTML = `<button id="copyBtn" onclick="copyScore(this, \`${scoreText}\`)">copy score</button>`;
 
       document.getElementById("liveStats").innerHTML = `
-        <div style="display:flex;justify-content:center;gap:2.5rem;">
-          <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
-          <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
-          <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
-        </div>
-        <div style="display:flex;justify-content:center;margin-top:0.5rem;">
-          <div class="stat-block" style="min-width:0;text-align:center;">
-            <span class="dimmed">unstable rate</span><br>${ur}
-          </div>
-        </div>
+        <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>${bpm}</div>
+        <div class="stat-block"><span class="dimmed">clicks</span><br>${count}</div>
+        <div class="stat-block"><span class="dimmed">cps</span><br>${cps}</div>
+        <div class="stat-block"><span class="dimmed">unstable rate</span><br>${ur}</div>
       `;
     }
 
