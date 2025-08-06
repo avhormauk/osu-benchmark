@@ -207,10 +207,10 @@
       tapType = tapType === 'stream' ? 'singletap' : 'stream';
       document.getElementById("tapTypeBtn").innerText = tapType;
 
-      const bpmLabel = tapType === 'singletap' ? 
-        'bpm <span style="font-size:0.9em">(1/2)</span>' : 
-        'bpm <span style="font-size:0.9em">(1/4)</span>';
-      
+      const bpmLabel = tapType === 'singletap'
+        ? 'bpm <span style="font-size:0.9em">(1/2)</span>'
+        : 'bpm <span style="font-size:0.9em">(1/4)</span>';
+
       document.getElementById("liveStats").querySelector(".highlight").innerHTML = bpmLabel;
 
       if (tapType === 'singletap') {
@@ -232,6 +232,18 @@
         document.getElementById("key2").value = "x";
       }
       updateAllowedKeys();
+
+      // Reset stats and hide copy button
+      document.getElementById("results").innerText = '';
+      document.getElementById("copyBtnContainer").innerHTML = '';
+      document.getElementById("liveStats").innerHTML = `
+        <div class="stat-group" style="display:flex;justify-content:center;gap:2.5rem;">
+          <div class="stat-block"><span class="highlight">${bpmLabel}</span><br>—</div>
+          <div class="stat-block"><span class="dimmed">clicks</span><br>—</div>
+          <div class="stat-block"><span class="dimmed">cps</span><br>—</div>
+          <div class="stat-block"><span class="dimmed">UR</span><br>—</div>
+        </div>
+      `;
     }
 
     function toggleTest() {
@@ -313,8 +325,8 @@
 
       let elapsed;
       if (mode === 'time') {
-        elapsed = goal;
-        document.getElementById("timer").innerText = `time: ${goal.toFixed(2)}`;
+        elapsed = (Date.now() - startTime) / 1000;
+        document.getElementById("timer").innerText = `time: ${elapsed.toFixed(2)}`;
       } else {
         elapsed = (Date.now() - startTime) / 1000;
       }
@@ -333,19 +345,30 @@
       document.getElementById("key2").disabled = false;
       document.getElementById("goalInput").disabled = false;
 
-      const currentDate = new Date().toLocaleString('en-US', { 
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      }).replace(',', ''); 
+      let showCopy = true;
+      if (mode === 'time') {
+        showCopy = elapsed >= goal - 0.01;
+      } else if (mode === 'clicks') {
+        showCopy = count >= goal;
+      }
 
-      const modeDisplay = mode === 'time' ? `${goal}sec` : `${goal}clicks`;
-      const scoreText = `${currentDate}, ${tapType}, ${modeDisplay}, ${count} clicks, ${cps} cps, ${bpm} bpm, ${ur} UR`;
+      if (showCopy) {
+        const currentDate = new Date().toLocaleString('en-US', { 
+          hour12: false,
+          hour: '2-digit',
+          minute: '2-digit',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).replace(',', ''); 
 
-      document.getElementById("copyBtnContainer").innerHTML = `<button id="copyBtn" onclick="copyScore(this, \`${scoreText}\`)">copy score</button>`;
+        const modeDisplay = mode === 'time' ? `${goal}sec` : `${goal}clicks`;
+        const scoreText = `${currentDate}, ${tapType}, ${modeDisplay}, ${count} clicks, ${cps} cps, ${bpm} bpm, ${ur} UR`;
+
+        document.getElementById("copyBtnContainer").innerHTML = `<button id="copyBtn" onclick="copyScore(this, \`${scoreText}\`)">copy score</button>`;
+      } else {
+        document.getElementById("copyBtnContainer").innerHTML = '';
+      }
 
       document.getElementById("liveStats").innerHTML = `
         <div class="stat-group" style="display:flex;justify-content:center;gap:2.5rem;">
