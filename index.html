@@ -161,9 +161,9 @@
   <div id="timer">time: 0.00</div>
   <div id="liveStats">
     <div class="stat-group" style="display:flex;justify-content:center;gap:2.5rem;">
-      <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
-      <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
-      <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
+      <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>—</div>
+      <div class="stat-block"><span class="dimmed">clicks</span><br>—</div>
+      <div class="stat-block"><span class="dimmed">cps</span><br>—</div>
       <div class="stat-block"><span class="dimmed">UR</span><br>—</div>
     </div>
   </div>
@@ -193,6 +193,14 @@
       document.getElementById("timer").innerText = 'time: 0.00';
       document.getElementById("results").innerText = '';
       document.getElementById("copyBtnContainer").innerHTML = '';
+      document.getElementById("liveStats").innerHTML = `
+        <div class="stat-group" style="display:flex;justify-content:center;gap:2.5rem;">
+          <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>—</div>
+          <div class="stat-block"><span class="dimmed">clicks</span><br>—</div>
+          <div class="stat-block"><span class="dimmed">cps</span><br>—</div>
+          <div class="stat-block"><span class="dimmed">UR</span><br>—</div>
+        </div>
+      `;
     }
 
     function switchTapType() {
@@ -244,9 +252,9 @@
       document.getElementById("timer").innerText = `time: 0.00`;
       document.getElementById("liveStats").innerHTML = `
         <div class="stat-group" style="display:flex;justify-content:center;gap:2.5rem;">
-          <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>0.00</div>
-          <div class="stat-block"><span class="dimmed">clicks</span><br>0</div>
-          <div class="stat-block"><span class="dimmed">cps</span><br>0.00</div>
+          <div class="stat-block"><span class="highlight">bpm <span style="font-size:0.9em">(1/4)</span></span><br>—</div>
+          <div class="stat-block"><span class="dimmed">clicks</span><br>—</div>
+          <div class="stat-block"><span class="dimmed">cps</span><br>—</div>
           <div class="stat-block"><span class="dimmed">UR</span><br>—</div>
         </div>
       `;
