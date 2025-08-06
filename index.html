@@ -130,13 +130,11 @@
   <div id="homepage">
     <h1>osu! benchmark</h1>
     <button class="test-btn" onclick="showTappingTest()">tapping test</button>
-    <!-- Add more test buttons here in the future -->
   </div>
 
   <div id="tappingtest" style="display:none;">
     <h1>osu! benchmark</h1>
     <button class="home-btn" onclick="showHome()">home</button>
-    <!-- Everything below is your existing tapping test UI -->
     <div class="controls">
       <div class="input-group" id="keyInputs">
         <label for="key1">key 1:</label>
@@ -170,7 +168,6 @@
   </div>
 
   <script>
-    // --- Home/tapping test navigation ---
     function showTappingTest() {
       document.getElementById("homepage").style.display = "none";
       document.getElementById("tappingtest").style.display = "";
@@ -180,7 +177,6 @@
       document.getElementById("homepage").style.display = "";
     }
 
-    // --- All your existing tapping test JS below here ---
     let count = 0;
     let goal = 10;
     let allowedKeys = new Set();
