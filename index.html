@@ -45,18 +45,31 @@
     button {
       font-size: 1rem;
       margin: 1rem 0.3rem;
-      background-color: #ffffff;
-      color: #000000;
+      background: #000;
+      color: #fff;
       border: none;
+      outline: 2px solid #fff;
       padding: 0.4rem 1rem;
       cursor: pointer;
       min-width: 120px;
-      font-family: inherit; 
+      font-family: inherit;
+      transition: background 0.2s, color 0.2s;
     }
 
+    /* Interactive buttons: gray by default, white on hover */
     #modeBtn,
-    #tapTypeBtn {
-      min-width: 100px; 
+    #tapTypeBtn,
+    #startStopBtn {
+      background: #444;
+      color: #fff;
+      outline: 2px solid #fff;
+      transition: background 0.2s, color 0.2s;
+    }
+    #modeBtn:hover,
+    #tapTypeBtn:hover,
+    #startStopBtn:hover {
+      background: #fff;
+      color: #000;
     }
 
     button:disabled {
@@ -115,9 +128,10 @@
     }
 
     .copied-btn {
+      background: #fff !important;
+      color: #000 !important;
       outline: 2px solid #fff;
-      background: #000;
-      color: #fff;
+      transition: background 0.2s, color 0.2s;
     }
   </style>
 </head>
