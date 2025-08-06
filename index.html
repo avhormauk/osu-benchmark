@@ -343,6 +343,11 @@
     }
 
     document.addEventListener("keydown", (e) => {
+      const active = document.activeElement;
+      if (active === document.getElementById("key1") || active === document.getElementById("key2")) {
+        return;
+      }
+
       const key = e.key.toLowerCase();
       if (!testActive && !finished && allowedKeys.has(key)) {
         startTest();
