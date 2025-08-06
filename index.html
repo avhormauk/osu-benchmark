@@ -247,7 +247,7 @@
     }
 
     function toggleTest() {
-      if (testActive) stopTest();
+      if (testActive) stopTest(false);
       else if (finished) {
         document.getElementById("startStopBtn").innerText = "start";
         finished = false;
@@ -307,15 +307,15 @@
           </div>
         `;
 
-        if (mode === 'time' && elapsed >= goal) stopTest();
+        if (mode === 'time' && elapsed >= goal) stopTest(true); // true = natural finish
         if (mode === 'clicks' && count >= goal) {
           count = goal; 
-          stopTest();
+          stopTest(true);
         }
       }, 50);
     }
 
-    function stopTest() {
+    function stopTest(naturalFinish = false) {
       clearInterval(interval);
       testActive = false;
       finished = true;
@@ -324,6 +324,7 @@
       let elapsed;
       if (mode === 'time') {
         elapsed = (Date.now() - startTime) / 1000;
+        if (naturalFinish) elapsed = goal;
         document.getElementById("timer").innerText = `time: ${elapsed.toFixed(2)}`;
       } else {
         elapsed = (Date.now() - startTime) / 1000;
